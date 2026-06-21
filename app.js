@@ -280,6 +280,7 @@ function renderCardRecords(cardId) {
     .filter((item) => item.cardId === cardId)
     .filter((item) => item.monthKey === monthKey)
     .filter((item) => state.showCanceled || item.status !== "canceled")
+    .sort(sortTransactionsByDate)
     .slice(0, 30);
 
   const toolbar = `
@@ -428,6 +429,12 @@ function getUsedAmount(cardId, monthKey) {
     .filter((item) => item.monthKey === monthKey)
     .filter((item) => item.status !== "canceled")
     .reduce((total, item) => total + Number(item.discountAmount || 0), 0);
+}
+
+function sortTransactionsByDate(a, b) {
+  const dateCompare = b.date.localeCompare(a.date);
+  if (dateCompare !== 0) return dateCompare;
+  return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
 }
 
 function calculateDiscount(amount, categoryKey) {
