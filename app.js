@@ -13,7 +13,7 @@ const categories = {
 
 const state = {
   selectedCardId: "me",
-  selectedCategory: "coffee",
+  selectedCategory: "movie",
   showCanceled: false,
   expandedCardIds: new Set(),
   data: loadData(),
