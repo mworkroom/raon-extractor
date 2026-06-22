@@ -245,9 +245,12 @@ function renderSummary() {
       const used = getUsedAmount(card.id, monthKey);
       const remaining = MONTHLY_LIMIT - used;
       const percent = Math.round((used / MONTHLY_LIMIT) * 100);
-      const cappedPercent = Math.min(percent, 100);
+      const remainingPercent = Math.max(0, Math.min(100, Math.round((remaining / MONTHLY_LIMIT) * 100)));
       const isOver = remaining < 0;
-      const status = isOver ? `초과 ${formatMoney(Math.abs(remaining))}원` : `잔여 ${formatMoney(remaining)}원`;
+      const usedStatus = `${formatMoney(used)}원 남음`;
+      const mainStatus = isOver
+        ? `${formatMoney(Math.abs(remaining))}원 초과`
+        : `${formatMoney(remaining)}원`;
       const isExpanded = state.expandedCardIds.has(card.id);
 
       return `
@@ -255,14 +258,13 @@ function renderSummary() {
           <button class="limit-toggle" type="button" data-card-toggle="${card.id}" aria-expanded="${isExpanded}">
             <span class="limit-top">
               <span class="card-name">${card.name}</span>
-              <span class="card-status ${isOver ? "is-over" : ""}">${status}</span>
+              <span class="card-status ${isOver ? "is-over" : ""}">${usedStatus}</span>
             </span>
             <span class="money-line">
-              <strong class="used-money">${formatMoney(used)}원</strong>
-              <span class="limit-money">/ ${formatMoney(MONTHLY_LIMIT)}원</span>
+              <strong class="available-money ${isOver ? "is-over" : ""}">${mainStatus}</strong>
             </span>
             <span class="progress-track" aria-hidden="true">
-              <span class="progress-bar" style="width: ${cappedPercent}%"></span>
+              <span class="progress-bar" style="width: ${remainingPercent}%"></span>
             </span>
             <span class="toggle-hint">${isExpanded ? "내역 접기" : "내역 보기"}</span>
           </button>
@@ -320,7 +322,7 @@ function renderCardRecords(cardId) {
               ${isCanceled ? "<span>취소됨</span>" : ""}
             </div>
             <div class="record-meta">
-              ${formatMoney(item.amount)}원 -> 할인 ${formatMoney(item.discountAmount)}원
+              ${formatMoney(item.amount)}원 → 할인 ${formatMoney(item.discountAmount)}원
             </div>
           </div>
           <div class="record-actions">
@@ -355,9 +357,7 @@ function renderHistory() {
           return `
             <div class="mini-row">
               <span class="mini-name">${card.name.replace(" 카드", "")}</span>
-              <span class="mini-track" aria-hidden="true">
-                <span class="mini-bar" style="width: ${Math.min(percent, 100)}%"></span>
-              </span>
+              <span class="mini-used-frame">${formatMoney(used)}원</span>
               <span class="mini-percent">${percent}%</span>
             </div>
           `;
@@ -432,9 +432,7 @@ function getUsedAmount(cardId, monthKey) {
 }
 
 function sortTransactionsByDate(a, b) {
-  const dateCompare = b.date.localeCompare(a.date);
-  if (dateCompare !== 0) return dateCompare;
-  return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
+  return a.date.localeCompare(b.date);
 }
 
 function calculateDiscount(amount, categoryKey) {
