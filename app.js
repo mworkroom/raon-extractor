@@ -305,7 +305,6 @@ function renderCardRecords(cardId) {
 
   const recordItems = records
     .map((item) => {
-      const card = cards.find((candidate) => candidate.id === item.cardId);
       const category = categories[item.category] || categories.coffee;
       const isCanceled = item.status === "canceled";
       const action = isCanceled ? "restore" : "cancel";
@@ -318,7 +317,6 @@ function renderCardRecords(cardId) {
               <span class="category-dot ${item.category}"></span>
               <span>${shortDateLabel(item.date)}</span>
               <span>${category.label}</span>
-              <span>${card ? card.name : item.cardId}</span>
               ${isCanceled ? "<span>취소됨</span>" : ""}
             </div>
             <div class="record-meta">
