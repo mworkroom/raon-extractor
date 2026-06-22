@@ -247,10 +247,10 @@ function renderSummary() {
       const percent = Math.round((used / MONTHLY_LIMIT) * 100);
       const remainingPercent = Math.max(0, Math.min(100, Math.round((remaining / MONTHLY_LIMIT) * 100)));
       const isOver = remaining < 0;
-      const usedStatus = `${formatMoney(used)}원 남음`;
+      const usedStatus = `${formatMoney(used)}원 사용`;
       const mainStatus = isOver
         ? `${formatMoney(Math.abs(remaining))}원 초과`
-        : `${formatMoney(remaining)}원`;
+        : `${formatMoney(remaining)}원 남음`;
       const isExpanded = state.expandedCardIds.has(card.id);
 
       return `
