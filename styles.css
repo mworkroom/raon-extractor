@@ -66,6 +66,14 @@ button {
   object-position: left center;
 }
 
+.brand-copy {
+  margin: 8px 0 0;
+  color: var(--purple-dark);
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-align: center;
+}
+
 .month-line {
   display: flex;
   align-items: center;
@@ -452,9 +460,9 @@ input:focus {
   align-items: center;
   min-height: 54px;
   padding: 8px;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 8px;
-  background: var(--panel-soft);
+  background: var(--panel);
 }
 
 .record-item.is-canceled {
@@ -503,7 +511,7 @@ input:focus {
   padding: 0 7px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--panel-soft);
   color: var(--purple);
   font-size: 0.78rem;
   font-weight: 900;
