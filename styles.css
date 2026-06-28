@@ -63,9 +63,9 @@ button {
 
 .brand-logo {
   display: block;
-  width: 120px;
-  height: 120px;
-  flex: 0 0 120px;
+  width: 100px;
+  height: 100px;
+  flex: 0 0 100px;
   object-fit: contain;
 }
 
