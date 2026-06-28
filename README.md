@@ -1,4 +1,4 @@
-# Half-Price Goblin
+# Raon Extractor
 두 장의 동일한 신용카드에 대해 카드별 월 30,000원 할인 한도를 관리합니다.
 
 ## 포함 기능
