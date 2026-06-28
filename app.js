@@ -92,6 +92,9 @@ function bindEvents() {
   });
 
   els.exportButton.addEventListener("click", exportData);
+  els.importInput.addEventListener("click", () => {
+    els.importInput.value = "";
+  });
   els.importInput.addEventListener("change", importData);
   els.resetButton.addEventListener("click", resetData);
 }
@@ -378,36 +381,70 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `half-price-goblin-backup-${todayInputValue()}.json`;
+  link.download = `raon-extractor-backup-${todayInputValue()}.json`;
   link.click();
   URL.revokeObjectURL(url);
   showStatus("내보냄");
 }
 
 function importData(event) {
-  const file = event.target.files[0];
+  const file = event.target.files?.[0];
   if (!file) return;
+
+  showStatus("백업 읽는 중");
 
   const reader = new FileReader();
   reader.addEventListener("load", () => {
     try {
-      const parsed = JSON.parse(String(reader.result));
-      if (!Array.isArray(parsed.transactions)) throw new Error("Invalid backup");
-      if (!window.confirm("현재 데이터를 백업 파일로 교체할까요?")) return;
+      const text = String(reader.result || "").replace(/^\uFEFF/, "").trim();
+      if (!text) throw new Error("빈 파일입니다.");
+
+      const parsed = JSON.parse(text);
+      const transactions = Array.isArray(parsed)
+        ? parsed
+        : Array.isArray(parsed.transactions)
+          ? parsed.transactions
+          : Array.isArray(parsed.data?.transactions)
+            ? parsed.data.transactions
+            : null;
+
+      if (!transactions) {
+        throw new Error("transactions 목록을 찾을 수 없습니다.");
+      }
+
+      if (!window.confirm(`${transactions.length}개의 기록을 가져와 현재 데이터를 교체할까요?`)) {
+        showStatus("가져오기 취소");
+        return;
+      }
+
       state.data = {
-        version: 1,
-        settings: { monthlyLimit: MONTHLY_LIMIT, discountRate: 0.5, cards },
-        transactions: parsed.transactions,
+        version: Number(parsed.version) || 1,
+        settings: {
+          monthlyLimit: Number(parsed.settings?.monthlyLimit) || MONTHLY_LIMIT,
+          discountRate: Number(parsed.settings?.discountRate) || 0.5,
+          cards,
+        },
+        transactions,
       };
-      saveData("가져옴");
+      saveData(`${transactions.length}개 가져옴`);
       render();
-    } catch {
-      window.alert("가져올 수 없는 파일입니다.");
+    } catch (error) {
+      console.error("Backup import failed:", error);
+      showStatus("가져오기 실패");
+      window.alert(`가져올 수 없는 파일입니다.\n${error.message}`);
     } finally {
       els.importInput.value = "";
     }
   });
-  reader.readAsText(file);
+
+  reader.addEventListener("error", () => {
+    console.error("Backup file read failed:", reader.error);
+    showStatus("파일 읽기 실패");
+    window.alert("백업 파일을 읽지 못했습니다.");
+    els.importInput.value = "";
+  });
+
+  reader.readAsText(file, "UTF-8");
 }
 
 function resetData() {
