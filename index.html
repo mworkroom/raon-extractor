@@ -14,13 +14,11 @@
     <div class="app-shell">
       <header class="app-header">
         <img class="brand-logo" src="assets/raon-extractor-logo.png" alt="" aria-hidden="true" />
-        <span class="brand-title">라온 착즙기</span>
+        <div class="brand-text">
+          <span class="brand-title"><span id="currentMonthLabel"></span>의 라온 착즙기</span>
+          <span id="saveStatus" aria-live="polite"></span>
+        </div>
       </header>
-
-      <div class="month-line" aria-live="polite">
-        <span id="currentMonthLabel"></span>
-        <span id="saveStatus"></span>
-      </div>
 
       <main>
         <section class="summary-grid" id="summaryGrid" aria-label="카드별 이번 달 한도"></section>
@@ -101,6 +99,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=20260629-3" defer></script>
+    <script src="app.js?v=20260629-4" defer></script>
   </body>
 </html>
