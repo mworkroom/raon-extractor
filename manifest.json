@@ -1,6 +1,6 @@
 {
-  "name": "Half-Price Goblin",
-  "short_name": "HP Goblin",
+  "name": "라온 착즙기",
+  "short_name": "라온 착즙기",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#F3F0F6",
@@ -8,10 +8,10 @@
   "description": "카드별 월 30,000원 할인 한도 기록 앱",
   "icons": [
     {
-      "src": "assets/half-price-goblin-logo.png",
-      "sizes": "512x128",
+      "src": "assets/apple-touch-icon.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
