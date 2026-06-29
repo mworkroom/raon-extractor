@@ -63,9 +63,9 @@ button {
 
 .brand-logo {
   display: block;
-  width: 100px;
-  height: 100px;
-  flex: 0 0 100px;
+  width: 120px;
+  height: 120px;
+  flex: 0 0 120px;
   object-fit: contain;
 }
 
@@ -74,13 +74,14 @@ button {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  line-height: 0.4;
+  margin-top: 40px;
 }
 
 .brand-title {
   color: var(--purple-dark);
   font-size: clamp(1.25rem, 4.7vw, 1.85rem);
   font-weight: 900;
-  line-height: 1.15;
   letter-spacing: -0.04em;
   white-space: nowrap;
 }
