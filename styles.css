@@ -23,14 +23,6 @@ html {
   background: var(--page);
 }
 
-
-@font-face {
-    font-family: 'Dohyun';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
-    font-weight: normal;
-    font-display: swap;
-}
-
 @font-face {
     font-family: 'Cafe24Anemone';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Cafe24Ohsquare.woff') format('woff');
@@ -86,7 +78,7 @@ button {
 
 .brand-logo {
   display: block;
-  width: 180px;
+  width: 140px;
   flex: 0 0 120px;
   object-fit: contain;
 }
