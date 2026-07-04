@@ -312,9 +312,9 @@ function renderCardRecords(cardId) {
 
   const toolbar = `
     <div class="card-records-toolbar">
-      <strong>이번 달 기록</strong>
+      <strong>사용 내역</strong>
       <button class="ghost-button ${state.showCanceled ? "is-active" : ""}" type="button" data-action="toggleCanceled">
-        ${state.showCanceled ? "취소 내역 숨기기" : "취소 내역 보이기"}
+        ${state.showCanceled ? "취소 숨기기" : "취소 보이기"}
       </button>
     </div>
   `;
