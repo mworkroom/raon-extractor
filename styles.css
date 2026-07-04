@@ -23,6 +23,29 @@ html {
   background: var(--page);
 }
 
+
+@font-face {
+    font-family: 'Dohyun';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cafe24Anemone';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Cafe24Ohsquare.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cafe24AnemoneAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/Cafe24Ohsquareair.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+
 body {
   min-height: 100%;
   margin: 0;
@@ -63,26 +86,26 @@ button {
 
 .brand-logo {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 180px;
   flex: 0 0 120px;
   object-fit: contain;
 }
 
 .brand-text {
   min-width: 0;
+  font-family: 'Cafe24AnemoneAir';
   display: flex;
   flex-direction: column;
   gap: 5px;
   line-height: 0.6;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .brand-title {
   color: var(--purple-dark);
-  font-size: 1.45rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  font-family: 'Cafe24Anemone';
+  font-size: 2rem;
+  font-weight: 900; 
   white-space: nowrap;
 }
 
@@ -341,7 +364,8 @@ label {
 }
 
 input[type="date"],
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
   width: 100%;
   min-width: 0;
   min-height: 48px;
@@ -490,6 +514,10 @@ input:focus {
   margin-bottom: 2px;
   font-size: 0.86rem;
   font-weight: 900;
+}
+
+.movie-title {
+  color: var(--purple);
 }
 
 .record-meta {
@@ -651,4 +679,8 @@ summary {
     padding-inline: 4px;
     font-size: 0.74rem;
   }
+}
+
+.movie-title-field[hidden] {
+  display: none;
 }

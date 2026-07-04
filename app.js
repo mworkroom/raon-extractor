@@ -14,7 +14,7 @@ const categories = {
 const state = {
   selectedCardId: "me",
   selectedCategory: "movie",
-  showCanceled: false,
+  showCanceled: true,
   expandedCardIds: new Set(),
   data: loadData(),
 };
@@ -26,6 +26,8 @@ const els = {
   saveStatus: document.querySelector("#saveStatus"),
   summaryGrid: document.querySelector("#summaryGrid"),
   entryForm: document.querySelector("#entryForm"),
+  movieTitleField: document.querySelector("#movieTitleField"),
+  movieTitleInput: document.querySelector("#movieTitleInput"),
   dateInput: document.querySelector("#dateInput"),
   amountInput: document.querySelector("#amountInput"),
   discountPreview: document.querySelector("#discountPreview"),
@@ -44,6 +46,7 @@ function init() {
     els.currentMonthLabel.textContent = monthLabel(currentMonthKey());
   }
   bindEvents();
+  updateMovieTitleField();
   render();
 }
 
@@ -60,6 +63,7 @@ function bindEvents() {
     button.addEventListener("click", () => {
       state.selectedCategory = button.dataset.category;
       updateSegments();
+      updateMovieTitleField();
       updatePreview();
     });
   });
@@ -103,7 +107,7 @@ function bindEvents() {
 
 function loadData() {
   const fallback = {
-    version: 1,
+    version: 2,
     settings: {
       monthlyLimit: MONTHLY_LIMIT,
       discountRate: 0.5,
@@ -143,6 +147,13 @@ function showStatus(message) {
 function addTransaction() {
   const amount = Number(els.amountInput.value);
   const date = els.dateInput.value || todayInputValue();
+  const movieTitle = els.movieTitleInput.value.trim();
+
+  if (state.selectedCategory === "movie" && !movieTitle) {
+    showStatus("영화 제목 확인");
+    els.movieTitleInput.focus();
+    return;
+  }
 
   if (!Number.isFinite(amount) || amount <= 0) {
     showStatus("금액 확인");
@@ -155,6 +166,7 @@ function addTransaction() {
     id: makeId(),
     cardId: state.selectedCardId,
     category: state.selectedCategory,
+    movieTitle: state.selectedCategory === "movie" ? movieTitle : "",
     amount: Math.round(amount),
     discountAmount,
     date,
@@ -165,6 +177,7 @@ function addTransaction() {
     restoredAt: null,
   });
 
+  els.movieTitleInput.value = "";
   els.amountInput.value = "";
   saveData("추가됨");
   render();
@@ -224,6 +237,13 @@ function updateSegments() {
   document.querySelectorAll("[data-category]").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.category === state.selectedCategory);
   });
+}
+
+function updateMovieTitleField() {
+  const isMovie = state.selectedCategory === "movie";
+  els.movieTitleField.hidden = !isMovie;
+  els.movieTitleInput.required = isMovie;
+  els.movieTitleInput.disabled = !isMovie;
 }
 
 function updatePreview() {
@@ -322,6 +342,7 @@ function renderCardRecords(cardId) {
               <span class="category-dot ${item.category}"></span>
               <span>${shortDateLabel(item.date)}</span>
               <span>${category.label}</span>
+              ${item.category === "movie" && item.movieTitle ? `<span class="movie-title">${escapeHtml(item.movieTitle)}</span>` : ""}
               ${isCanceled ? "<span>취소됨</span>" : ""}
             </div>
             <div class="record-meta">
@@ -420,7 +441,7 @@ function importData(event) {
       }
 
       state.data = {
-        version: Number(parsed.version) || 1,
+        version: 2,
         settings: {
           monthlyLimit: Number(parsed.settings?.monthlyLimit) || MONTHLY_LIMIT,
           discountRate: Number(parsed.settings?.discountRate) || 0.5,
@@ -452,7 +473,7 @@ function importData(event) {
 function resetData() {
   if (!window.confirm("모든 기록을 삭제할까요?")) return;
   state.data = {
-    version: 1,
+    version: 2,
     settings: { monthlyLimit: MONTHLY_LIMIT, discountRate: 0.5, cards },
     transactions: [],
   };
@@ -519,6 +540,15 @@ function shortDateLabel(dateValue) {
 
 function formatMoney(value) {
   return moneyFormat.format(Math.round(Number(value || 0)));
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function makeId() {
