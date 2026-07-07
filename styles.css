@@ -30,6 +30,13 @@ html {
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Cafe24Anemone';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Cafe24Ohsquare.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
 body {
   min-height: 100%;
   margin: 0;
@@ -88,8 +95,8 @@ button {
 .brand-title {
   color: var(--purple-dark);
   font-family: 'Dohyun';
-  font-size: 2rem;
-  font-weight: 400; 
+  font-size: 2rem; 
+  letter-spacing: -0.02em;
   white-space: nowrap;
 }
 
